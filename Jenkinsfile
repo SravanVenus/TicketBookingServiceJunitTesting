@@ -1,5 +1,19 @@
 pipeline {
     agent any
+    tools { 
+        maven 'maven_3.3.9' 
+        jdk 'jdknew' 
+    }
+    stages {
+        stage ('Initialize') {
+            steps {
+                bat '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                ''' 
+            }
+        }
+
     stages {
         stage('git repo & clean') {
             steps {
