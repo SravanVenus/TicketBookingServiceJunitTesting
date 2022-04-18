@@ -1,39 +1,27 @@
 pipeline {
     agent any
-    tools { 
-        maven 'maven_3.8.5' 
-        jdk 'jdknew' 
+    tools {
+        maven 'maven_3.8.5'
+        jdk 'jdknew'
     }
-   
     stages {
         stage ('Initialize') {
             steps {
                 bat '''
                     echo "PATH = ${PATH}"
                     echo "MAVEN_HOME = ${MAVEN_HOME}"
-                ''' 
+                '''
             }
         }
-        stage('git repo & clean') {
+
+        stage ('Build') {
             steps {
-                bat "rmdir  /s /q TicketBookingServiceJunitTesting"
-                bat "git clone https://github.com/kishancs2020/TicketBookingServiceJunitTesting.git"
-                bat "mvn clean -f TicketBookingServiceJunitTesting"
+                bat 'mvn -Dmaven.test.failure.ignore=true install' 
             }
-        }
-        stage('install') {
-            steps {
-                bat "mvn install -f TicketBookingServiceJunitTesting"
-            }
-        }
-        stage('test') {
-            steps {
-                bat "mvn test -f TicketBookingServiceJunitTesting"
-            }
-        }
-        stage('package') {
-            steps {
-                bat "mvn package -f TicketBookingServiceJunitTesting"
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml' 
+                }
             }
         }
     }
