@@ -4,6 +4,7 @@ pipeline {
         maven 'maven_3.8.5' 
         jdk 'jdknew' 
     }
+   
     stages {
         stage ('Initialize') {
             steps {
@@ -13,8 +14,6 @@ pipeline {
                 ''' 
             }
         }
-
-    stages {
         stage('git repo & clean') {
             steps {
                 bat "rmdir  /s /q TicketBookingServiceJunitTesting"
