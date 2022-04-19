@@ -1,6 +1,7 @@
 pipeline {
     agent any
-        stage('git repo & clean') {
+    withMaven(globalMavenSettingsConfig: 'null', jdk: 'jdknew', maven: 'maven_3.8.5', mavenSettingsConfig: 'null') {
+    stage('git repo & clean') {
             steps {
                 bat "rmdir  /s /q TicketBookingServiceJunitTesting"
                 bat "git clone https://github.com/kishancs2020/TicketBookingServiceJunitTesting.git"
@@ -23,4 +24,4 @@ pipeline {
             }
         }
     }
-}
+}     
